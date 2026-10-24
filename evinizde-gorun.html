@@ -45,35 +45,47 @@
       <div class="arx-head">
         <div class="eyebrow">Odanızda görün</div>
         <h1>Mobilyanızı odanızda deneyin</h1>
-        <p>Mutfak, gardırop, karyola ve daha fazlası. Gerçek ölçüde; rengi ve kulbu anında değiştirin.</p>
+        <p>Kendi ölçünüzü girin, rengi ve kulbu seçin, telefon kamerasıyla odanıza yerleştirin.</p>
       </div>
       <div class="arx-grid">
         <div class="arx-stage">
-          <model-viewer id="arv" alt="Gardırop, 180 cm, beyaz lake"
+          <model-viewer id="arv" alt="Mobilya modeli"
             ar ar-modes="webxr scene-viewer quick-look" ar-scale="fixed" ar-placement="floor"
-            camera-controls touch-action="pan-y" camera-orbit="30deg 80deg auto" shadow-intensity="1" shadow-softness="0.8"
+            camera-controls touch-action="pan-y" camera-orbit="30deg 78deg 108%" shadow-intensity="1" shadow-softness="0.8"
             environment-image="neutral" exposure="1.05" interaction-prompt="none">
             <button slot="ar-button" class="ar-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M12 7l5 3v5l-5 3-5-3v-5z"/></svg>Odanızda görün</button>
+            <span slot="hotspot-w" class="dim" id="dim-w" data-position="0m 0m 0m" data-normal="0m 0m 1m"></span>
+            <span slot="hotspot-h" class="dim" id="dim-h" data-position="0m 0m 0m" data-normal="1m 0m 0m"></span>
+            <span slot="hotspot-d" class="dim" id="dim-d" data-position="0m 0m 0m" data-normal="1m 0m 0m"></span>
             <div class="arx-dock">
-              <div class="arx-colors" id="ar-color" role="group" aria-label="Kapak rengi"><button type="button" style="--c:#F1F1EC" data-c="beyaz" aria-pressed="true" aria-label="Beyaz lake" title="Beyaz lake"></button><button type="button" style="--c:#DCCFB8" data-c="kasmir" aria-pressed="false" aria-label="Kaşmir" title="Kaşmir"></button><button type="button" style="--c:#3B3F46" data-c="antrasit" aria-pressed="false" aria-label="Antrasit" title="Antrasit"></button><button type="button" style="--c:#93A68B" data-c="adacayi" aria-pressed="false" aria-label="Adaçayı" title="Adaçayı"></button><button type="button" style="--c:#34487E" data-c="gece" aria-pressed="false" aria-label="Gece mavisi" title="Gece mavisi"></button><button type="button" style="--c:#7A2430" data-c="bordo" aria-pressed="false" aria-label="Bordo akrilik" title="Bordo akrilik"></button><button type="button" style="--c:#C9A06E" data-c="mese" aria-pressed="false" aria-label="Meşe" title="Meşe"></button><button type="button" style="--c:#6B4429" data-c="ceviz" aria-pressed="false" aria-label="Ceviz" title="Ceviz"></button></div>
-              <div class="arx-handles" id="ar-handle" role="group" aria-label="Kulp"><button type="button" data-h="cubuk" aria-pressed="true">Çubuk</button><button type="button" data-h="dugme" aria-pressed="false">Düğme</button><button type="button" data-h="yok" aria-pressed="false">Kulpsuz</button></div>
-              <div class="arx-name" id="ar-cname" aria-live="polite">Beyaz lake · Çubuk kulp</div>
+              <div class="arx-colors" id="ar-color" role="group" aria-label="Kapak rengi"><button type="button" style="--c:#F1F1EC" data-c="beyaz" aria-pressed="false" aria-label="Beyaz lake" title="Beyaz lake"></button><button type="button" style="--c:#DCCFB8" data-c="kasmir" aria-pressed="false" aria-label="Kaşmir" title="Kaşmir"></button><button type="button" style="--c:#3B3F46" data-c="antrasit" aria-pressed="false" aria-label="Antrasit" title="Antrasit"></button><button type="button" style="--c:#93A68B" data-c="adacayi" aria-pressed="false" aria-label="Adaçayı" title="Adaçayı"></button><button type="button" style="--c:#34487E" data-c="gece" aria-pressed="false" aria-label="Gece mavisi" title="Gece mavisi"></button><button type="button" style="--c:#7A2430" data-c="bordo" aria-pressed="false" aria-label="Bordo akrilik" title="Bordo akrilik"></button><button type="button" style="--c:repeating-linear-gradient(90deg,rgba(120,80,40,.25) 0 1px,transparent 1px 4px),#C9A06E" data-c="mese" aria-pressed="false" aria-label="Meşe" title="Meşe"></button><button type="button" style="--c:repeating-linear-gradient(90deg,rgba(30,15,5,.35) 0 1px,transparent 1px 4px),#6B4429" data-c="ceviz" aria-pressed="false" aria-label="Ceviz" title="Ceviz"></button></div>
+              <div class="arx-handles" role="group" aria-label="Kulp ve ölçü">
+                <span id="ar-handle" class="arx-hgroup"><button type="button" data-k="cubuk" aria-pressed="false">Çubuk</button><button type="button" data-k="dugme" aria-pressed="false">Düğme</button><button type="button" data-k="yok" aria-pressed="false">Kulpsuz</button></span>
+                <button type="button" id="ar-dims" class="arx-dimbtn" aria-pressed="true" title="Ölçü etiketleri">Ölçü</button>
+              </div>
+              <div class="arx-name" id="ar-cname" aria-live="polite"></div>
             </div>
           </model-viewer>
         </div>
         <div class="arx-panel">
-          <div class="k3d-row"><span class="k3d-lbl">Mobilya</span>
-            <div class="seg arx-prod" id="ar-product" role="group" aria-label="Mobilya"></div>
+          <div class="k3d-row"><span class="k3d-lbl">Mobilya</span><div class="seg arx-prod" id="ar-product" role="group" aria-label="Mobilya"></div></div>
+          <div class="k3d-row">
+            <span class="k3d-lbl">Ölçü</span>
+            <div id="row-w"><div class="rng"><label for="ar-w">Genişlik</label><output id="o-w"></output></div><input type="range" id="ar-w"><div class="arx-presets" id="ar-presets"></div></div>
+            <div id="row-h" hidden><div class="rng"><label for="ar-h">Yükseklik (tavana kadar)</label><output id="o-h"></output></div><input type="range" id="ar-h"></div>
+            <div id="row-size" hidden><div class="seg" role="group" aria-label="Yatak ölçüsü"></div></div>
           </div>
-          <div class="k3d-row"><span class="k3d-lbl">Ölçü</span><div class="seg three" id="ar-width" role="group"></div></div>
+          <div class="k3d-row"><span class="k3d-lbl">Gövde</span><div class="chips" id="ar-body" role="group"><button type="button" data-g="ayni" aria-pressed="false"><i style="background:conic-gradient(#93A68B 0 50%,#6f8268 0)"></i>Kapakla aynı</button><button type="button" data-g="beyaz" aria-pressed="false"><i style="background:#F1F1EC"></i>Beyaz</button><button type="button" data-g="antrasit" aria-pressed="false"><i style="background:#3B3F46"></i>Antrasit</button><button type="button" data-g="mese" aria-pressed="false"><i style="background:repeating-linear-gradient(90deg,rgba(120,80,40,.25) 0 1px,transparent 1px 4px),#C9A06E"></i>Meşe</button><button type="button" data-g="ceviz" aria-pressed="false"><i style="background:repeating-linear-gradient(90deg,rgba(30,15,5,.35) 0 1px,transparent 1px 4px),#6B4429"></i>Ceviz</button></div></div>
+          <div class="k3d-row" id="row-top" hidden><span class="k3d-lbl">Tezgah</span><div class="chips" id="ar-top" role="group"><button type="button" data-t="mermer" aria-pressed="false"><i style="background:#ECEAE6"></i>Mermer</button><button type="button" data-t="granit" aria-pressed="false"><i style="background:#232428"></i>Granit</button><button type="button" data-t="mese" aria-pressed="false"><i style="background:repeating-linear-gradient(90deg,rgba(120,80,40,.25) 0 1px,transparent 1px 4px),#C9A06E"></i>Meşe</button><button type="button" data-t="beton" aria-pressed="false"><i style="background:#9EA0A1"></i>Beton</button></div></div>
           <div class="k-sum arx-sum" id="ar-sum" aria-live="polite"></div>
-          <a class="btn btn-green" id="ar-wa" href="https://wa.me/905422683828?text=" target="_blank" rel="noopener">Bu seçimle ölçü isteyin</a>
+          <a class="btn btn-green" id="ar-wa" href="https://wa.me/905422683828?text=" target="_blank" rel="noopener">Bu tasarımla ölçü isteyin</a>
+          <button type="button" class="btn btn-ghost" id="ar-share">Tasarım linkini paylaş</button>
           <div class="ar-box ar-desk" id="ar-desk" hidden>
-            <div id="ar-qr" aria-label="Bu sayfanın QR kodu"></div>
-            <div><h3>Telefonunuzla açın</h3><p>Kamerayla odada görmek için QR kodu telefonunuzla okutun.</p></div>
+            <div id="ar-qr" aria-label="Bu tasarımın QR kodu"></div>
+            <div><h3>Telefonunuzla açın</h3><p>QR kodu okutun; bu tasarım telefonunuzda açılır, kamerayla odanıza yerleştirin.</p></div>
           </div>
-          <p class="arx-note">Telefonda "Odanızda görün"e dokunun, kamerayı yere tutun, mobilyayı sürükleyip duvara yaslayın. Android'de kamera açıkken de renk ve kulp değişir; iPhone'da seçimi açmadan önce yapın.</p>
-          <p class="ar-fail" id="ar-fail" hidden>Kamera açılamadı. Telefonunuz bu özelliği desteklemiyor olabilir; modeli ekranda çevirip inceleyebilirsiniz.</p>
+          <p class="arx-note">Telefonda "Odanızda görün"e dokunun, kamerayı yere tutun, mobilyayı sürükleyip duvara yaslayın. Android'de kamera açıkken de renk, kulp ve ölçü etiketleri çalışır; iPhone'da seçimi açmadan önce yapın.</p>
+          <p class="ar-fail" id="ar-fail" hidden></p>
         </div>
       </div>
     </div>
@@ -108,6 +120,7 @@
 <script src="js/site.js"></script>
 <script type="module" src="js/vendor/model-viewer.min.js"></script>
 <script src="js/vendor/qrcode.min.js"></script>
+<script src="js/ar-uret.js"></script>
 <script src="js/ar.js"></script>
 </body>
 </html>
