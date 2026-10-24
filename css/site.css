@@ -494,3 +494,25 @@ footer{border-top:1px solid var(--line);margin-top:84px;background:var(--surface
 
 [hidden]{display:none !important}
 .dim:empty{display:none}
+
+/* Odanızda Gör: adımlı akış */
+.arx-hidden-ar{display:none !important}
+#arv .arx-dock{display:none}
+#arv[ar-status="session-started"] .arx-dock,#arv[ar-status="object-placed"] .arx-dock{display:flex}
+.arx-dock .arx-hgroup{display:flex}
+.arx-dimbtn{position:absolute;top:12px;left:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 13px;font:600 12px var(--body);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.arx-dimbtn[aria-pressed="false"]{color:var(--muted);text-decoration:line-through}
+#arv[ar-status="session-started"] .arx-dimbtn,#arv[ar-status="object-placed"] .arx-dimbtn{top:auto;bottom:120px}
+.panel-color{padding:2px 0}
+.arx-sub{font-size:13px;font-weight:600;color:var(--muted);margin-top:4px}
+.arx-go{font-size:17px;padding:16px 20px;gap:10px}
+.arx-go svg{width:22px;height:22px}
+.arx-after{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.arx-after.lit{border-top:0;padding:14px;border-radius:14px;background:var(--blue-soft);animation:arxlit 1.2s ease 2}
+@keyframes arxlit{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--green) 35%,transparent)}}
+@media (prefers-reduced-motion:reduce){.arx-after.lit{animation:none}}
+@media (max-width:900px){.arx-stage{height:56vh;min-height:360px}}
+.arx-hgroup button{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:9px 8px;font:600 13px var(--body);color:var(--ink);cursor:pointer}
+.arx-hgroup button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.panel-color{flex-wrap:wrap;overflow:visible}
+@media (min-width:901px){.arx-stage{position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}}

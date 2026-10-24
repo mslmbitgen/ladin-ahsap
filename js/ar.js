@@ -142,12 +142,15 @@
     $('dim-w').textContent = '↔ ' + cm(d.W);
     $('dim-h').textContent = '↕ ' + cm(d.H);
     $('dim-d').textContent = 'derinlik ' + cm(d.D);
-    mv.cameraTarget = 'auto ' + (s.y * 0.42).toFixed(2) + 'm auto';
+    mv.cameraTarget = 'auto ' + (s.y * 0.5).toFixed(2) + 'm auto';
   }
 
   // ---------- Arayüz ----------
   function press(container, attr, value) {
     Array.prototype.forEach.call(container.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute(attr) === String(value)); });
+  }
+  function pressAll(selector, attr, value) {
+    Array.prototype.forEach.call(document.querySelectorAll(selector), function (c) { press(c, attr, value); });
   }
   function renderControls() {
     var pr = PRODUCTS[state.p];
@@ -163,7 +166,7 @@
     if (pr.sizes) $('row-size').querySelector('.seg').innerHTML = pr.sizes.map(function (s) {
       return '<button type="button" data-s="' + s[0] + '" aria-pressed="' + (s[0] === state.size) + '">' + s[1] + '</button>';
     }).join('');
-    press($('ar-color'), 'data-c', state.c); press($('ar-handle'), 'data-k', state.k);
+    pressAll('.arx-colors', 'data-c', state.c); pressAll('.arx-hgroup', 'data-k', state.k);
     press($('ar-body'), 'data-g', state.g); press($('ar-top'), 'data-t', state.t);
   }
   function update() {
@@ -193,8 +196,13 @@
   });
   onClick('ar-presets', function (b) { state.w = +b.dataset.v; $('ar-w').value = state.w; if (PRODUCTS[state.p].hr) { state.h = 2400; $('ar-h').value = 2400; } loadModel(); update(); });
   onClick('row-size', function (b) { state.size = b.dataset.s; press($('row-size'), 'data-s', state.size); loadModel(); update(); });
-  onClick('ar-color', function (b) { state.c = b.dataset.c; press($('ar-color'), 'data-c', state.c); applyLook(); update(); });
-  onClick('ar-handle', function (b) { state.k = b.dataset.k; press($('ar-handle'), 'data-k', state.k); applyLook(); update(); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.arx-colors button, .arx-hgroup button');
+    if (!b) return;
+    if (b.dataset.c) { state.c = b.dataset.c; pressAll('.arx-colors', 'data-c', state.c); }
+    else { state.k = b.dataset.k; pressAll('.arx-hgroup', 'data-k', state.k); }
+    applyLook(); update();
+  });
   onClick('ar-body', function (b) { state.g = b.dataset.g; press($('ar-body'), 'data-g', state.g); applyLook(); update(); });
   onClick('ar-top', function (b) { state.t = b.dataset.t; press($('ar-top'), 'data-t', state.t); applyLook(); update(); });
   $('ar-dims').addEventListener('click', function () {
@@ -211,11 +219,20 @@
     else prompt('Linki kopyalayın:', url);
   });
 
-  // Bilgisayarda kamera yok: QR kodla telefona geçir
+  var wasInAR = false;
+  function afterAR() {
+    $('ar-after').classList.add('lit');
+    $('ar-wa').textContent = 'Beğendiniz mi? Bu tasarımla ölçü isteyin';
+  }
+  // Odamda Göster: telefonda kamerayı açar; bilgisayarda QR kodla telefona geçirir
+  $('ar-go').addEventListener('click', function () {
+    $('ar-fail').hidden = true;
+    if (mv.canActivateAR) { wasInAR = true; mv.activateAR(); return; }
+    showMode(); $('ar-desk').hidden = false;
+    $('ar-desk').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
   function showMode() {
-    var can = !!mv.canActivateAR;
-    $('ar-desk').hidden = can;
-    if (can) return;
+    if (mv.canActivateAR) return;
     var qrBox = $('ar-qr');
     if (/^https?:/.test(location.protocol) && location.hostname !== 'localhost' && window.qrcode) {
       var qr = qrcode(0, 'L'); qr.addData(shareURL()); qr.make();
@@ -225,9 +242,11 @@
   mv.addEventListener('load', function () {
     texCache = {};
     applyLook(); placeDims(); showMode();
-    if (!mv.dataset.framed) { mv.cameraOrbit = '30deg 78deg 118%'; mv.jumpCameraToGoal(); mv.dataset.framed = '1'; }
+    if (!mv.dataset.framed) { mv.cameraOrbit = '30deg 78deg 112%'; mv.jumpCameraToGoal(); mv.dataset.framed = '1'; }
   });
   mv.addEventListener('ar-status', function (e) {
+    if (e.detail.status === 'session-started') wasInAR = true;
+    if (e.detail.status === 'not-presenting' && wasInAR) { afterAR(); $('ar-after').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     if (e.detail.status === 'failed') {
       $('ar-fail').textContent = usingBlob
         ? 'Bu telefonda özel ölçü kamerada açılamadı. "Standart" ölçülerden birini seçip tekrar deneyin.'
@@ -236,9 +255,12 @@
     }
   });
 
+  // iPhone Quick Look ve Android Scene Viewer sayfadan çıkar; geri dönünce sipariş butonunu öne çıkar
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && wasInAR) afterAR(); });
+
   if (!state.w && PRODUCTS[state.p].w) state.w = PRODUCTS[state.p].def;
   renderControls();
   loadModel();
   update();
-  setTimeout(showMode, 1500);
+  setTimeout(function () { if (!mv.canActivateAR) $('ar-go').lastChild.textContent = 'Odamda Göster (telefonda)'; }, 1500);
 })();
