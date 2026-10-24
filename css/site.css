@@ -42,9 +42,9 @@ button{font:inherit;color:inherit}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:24px;padding-block:14px}
-nav{display:flex;gap:22px;margin-left:auto}
-nav a{text-decoration:none;font-weight:500;color:var(--muted)}
-nav a:hover{color:var(--ink)}
+#nav{display:flex;gap:22px;margin-left:auto}
+#nav a{text-decoration:none;font-weight:500;color:var(--muted)}
+#nav a:hover{color:var(--ink)}
 .phone{font:500 14px var(--mono);text-decoration:none;white-space:nowrap}
 .menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:10px;width:44px;height:44px;cursor:pointer;place-items:center}
 .menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:18px;height:2px;background:var(--ink);position:relative;content:"";transition:transform .2s}
@@ -61,9 +61,9 @@ nav a:hover{color:var(--ink)}
 @media (max-width:900px){
   .phone,.bar>.btn{display:none}
   .menu-btn{display:grid}
-  nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:8px var(--gutter-r) 16px var(--gutter)}
-  nav.open{display:flex}
-  nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink)}
+  #nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:8px var(--gutter-r) 16px var(--gutter)}
+  #nav.open{display:flex}
+  #nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink)}
 }
 
 /* Hero */
@@ -411,56 +411,7 @@ footer{border-top:1px solid var(--line);margin-top:84px;background:var(--surface
 @media (max-width:860px){.try{grid-template-columns:1fr;gap:32px}}
 @media (prefers-reduced-motion:reduce){.svc .ph img{transition:none}}
 
-/* ---------- 3D Mutfak Tasarlayıcı ---------- */
-.k3d{display:grid;grid-template-columns:minmax(0,1fr) 360px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--surface)}
-.k3d-stage{position:relative;min-height:600px;background:var(--paper)}
-.k3d-canvas{position:absolute;inset:0}
-.k3d-canvas canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
-.k3d-canvas canvas:active{cursor:grabbing}
-.k3d-fallback{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
-.k3d-views{position:absolute;top:14px;left:14px;display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.k3d-views button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font:600 13px var(--body);color:var(--muted);cursor:pointer}
-.k3d-views button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.k3d-hint{position:absolute;left:14px;bottom:14px;font:500 11px var(--mono);color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px;pointer-events:none}
-.k3d-badge{position:absolute;top:14px;right:14px;font:500 11px var(--mono);color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:6px 9px;pointer-events:none}
-.k3d-panel{padding:22px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
-.k3d-row{display:flex;flex-direction:column;gap:10px}
-.k3d-lbl{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
-.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.seg.three{grid-template-columns:repeat(3,1fr)}
-.seg.two{grid-template-columns:repeat(2,1fr)}
-.seg button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 6px;font:600 13px var(--body);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1.15}
-.seg button[aria-pressed="true"]{border-color:var(--blue);box-shadow:inset 0 0 0 1.5px var(--blue);background:var(--blue-soft)}
-.seg svg{width:34px;height:26px}
-.seg svg .w{fill:var(--wood);stroke:var(--ink);stroke-width:1.2}
-.seg svg .r{fill:none;stroke:var(--ink);stroke-width:1.2}
-.seg .chip{width:100%;height:16px;border-radius:4px;border:1px solid var(--line)}
-.chip-mermer{background:linear-gradient(115deg,#F4F3F0 0 30%,#C9CACE 31%,#F4F3F0 33% 70%,#D5D6D9 71%,#F4F3F0 73%)}
-.chip-granit{background:radial-gradient(circle at 20% 40%,#6A6B70 1px,transparent 2px) 0 0/6px 6px,#1F2023}
-.chip-mese{background:repeating-linear-gradient(0deg,rgba(120,80,40,.18) 0 1px,transparent 1px 5px),#CFA06B}
-.chip-beton{background:radial-gradient(circle at 30% 60%,rgba(255,255,255,.35) 1px,transparent 2px) 0 0/5px 5px,#9EA0A1}
-.rng{display:flex;justify-content:space-between;font-size:14px}
-.rng output{font:500 13px var(--mono);color:var(--blue);font-variant-numeric:tabular-nums}
-.k3d-row input[type=range]{width:100%;accent-color:var(--blue);margin:2px 0 6px}
-.k-sw{display:flex;flex-wrap:wrap;gap:6px}
-.k-sw .swatch{width:32px;height:32px}
-.k-sel{font-size:13px;color:var(--muted)}
-.k-tog{gap:8px}
-.k-tog label{flex-direction:row;align-items:center;gap:10px;font-size:15px;font-weight:500}
-.k-tog input{width:18px;height:18px;accent-color:var(--blue);padding:0}
-.k-sum{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px}
-.k-sum span{display:block;font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.k-sum b{font-size:14px;font-weight:600}
-.k3d-panel .btn{width:100%}
-@media (max-width:980px){
-  .k3d{grid-template-columns:1fr}
-  .k3d-stage{min-height:0;height:min(72vw,520px)}
-  .k3d-panel{border-left:0;border-top:1px solid var(--line)}
-  .k3d-hint{display:none}
-}
-@media (max-width:520px){.k3d-stage{height:92vw}.k3d-badge{top:auto;bottom:12px;right:12px}}
-
-/* Ana sayfa 3D tanıtım bandı: teknik çizim (blueprint) zemin */
+/* Ana sayfa "Odanızda Gör" tanıtım bandı: teknik çizim (blueprint) zemin */
 .bp{position:relative;color:#E9EEFF;background:#0E1733;overflow:hidden}
 .bp::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(130,160,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(130,160,255,.09) 1px,transparent 1px),linear-gradient(rgba(130,160,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(130,160,255,.05) 1px,transparent 1px);background-size:80px 80px,80px 80px,16px 16px,16px 16px}
 .bp .wrap{position:relative;display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:center;padding-block:84px}
@@ -478,20 +429,49 @@ footer{border-top:1px solid var(--line);margin-top:84px;background:var(--surface
 .bp .corner{position:absolute;font:500 11px var(--mono);color:rgba(159,180,255,.6)}
 @media (max-width:900px){.bp .wrap{grid-template-columns:1fr;gap:32px;padding-block:56px}}
 
-@media (max-width:1200px){.bar .phone{display:none}nav{gap:18px}}
+@media (max-width:1200px){.bar .phone{display:none}#nav{gap:18px}}
 
-/* ---------- Evinizde Görün (AR) ---------- */
-#arv{position:absolute;inset:0;width:100%;height:100%;background:var(--paper);--poster-color:transparent;--progress-bar-color:var(--green)}
-.ar-btn{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);border:0;border-radius:999px;background:var(--green);color:#0E1A08;font:700 16px var(--body);padding:14px 22px;box-shadow:0 10px 24px rgba(0,0,0,.2);cursor:pointer;display:flex;gap:10px;align-items:center;white-space:nowrap}
-.ar-btn svg{width:22px;height:22px}
-.ar-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px}
-.ar-box h3{font:700 15px var(--body);margin-bottom:8px}
-.ar-box ol{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted)}
-.ar-desk{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center}
-.ar-desk p{color:var(--muted)}
-#ar-qr{width:112px;height:112px;background:#FFFFFF;border-radius:8px;display:grid;place-items:center;font-size:11px;text-align:center;color:#56607D;padding:6px}
-#ar-qr svg{width:100%;height:100%}
-.ar-sw .swatch{width:36px;height:36px}
-.ar-fail{font-size:13px;color:var(--muted)}
+
+
 .bp .acts{display:flex;gap:12px;flex-wrap:wrap}
-.bp .btn-ghost{color:#FFFFFF;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
+
+/* ---------- Odanızda Gör (AR) ---------- */
+.k3d-row{display:flex;flex-direction:column;gap:10px}
+.k3d-lbl{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seg.three{grid-template-columns:repeat(3,1fr)}
+.seg.two{grid-template-columns:repeat(2,1fr)}
+.seg.arx-prod{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+.seg button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 6px;font:600 13px var(--body);color:var(--ink);cursor:pointer;line-height:1.2}
+.seg button[aria-pressed="true"]{border-color:var(--blue);box-shadow:inset 0 0 0 1.5px var(--blue);background:var(--blue-soft)}
+.k-sum{display:grid;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.k-sum span{display:block;font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.k-sum b{font-size:14px;font-weight:600}
+.arx{padding-block:28px 64px}
+.arx-head{margin-bottom:18px}
+.arx-head h1{font-size:clamp(28px,4vw,44px);margin:8px 0 6px}
+.arx-head p{color:var(--muted)}
+.arx-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.arx-stage{position:relative;height:min(74vh,660px);border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+#arv{width:100%;height:100%;background:var(--paper);--poster-color:transparent;--progress-bar-color:var(--green)}
+.ar-btn{position:absolute;top:12px;right:12px;border:0;border-radius:999px;background:var(--green);color:#0E1A08;font:700 15px var(--body);padding:11px 16px;box-shadow:0 8px 20px rgba(0,0,0,.18);cursor:pointer;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.ar-btn svg{width:20px;height:20px}
+.arx-dock{position:absolute;left:10px;right:10px;bottom:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.arx-colors{display:flex;gap:8px;overflow-x:auto;padding:4px 2px;scrollbar-width:none}
+.arx-colors button{flex:none;width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--c);cursor:pointer;padding:0}
+.arx-colors button[aria-pressed="true"]{border-color:var(--green);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--green)}
+.arx-handles{display:flex;gap:6px}
+.arx-handles button{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:8px;font:600 13px var(--body);color:var(--ink);cursor:pointer}
+.arx-handles button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.arx-name{font:500 11px var(--mono);color:var(--muted);padding-left:2px}
+.arx-panel{display:flex;flex-direction:column;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.arx-panel .btn{width:100%}
+.arx-note{font-size:13px;color:var(--muted)}
+.ar-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.ar-box h3{font:700 15px var(--body);margin-bottom:6px}
+.ar-desk{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:center}
+.ar-desk p{color:var(--muted)}
+#ar-qr{width:104px;height:104px;background:#FFFFFF;border-radius:8px;display:grid;place-items:center;font-size:11px;text-align:center;color:#56607D;padding:6px}
+#ar-qr svg{width:100%;height:100%}
+.ar-fail{font-size:13px;color:var(--muted)}
+@media (max-width:900px){.arx-grid{grid-template-columns:1fr}.arx-stage{height:66vh;min-height:440px}.arx{padding-block:18px 40px}}
