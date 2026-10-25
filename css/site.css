@@ -516,3 +516,7 @@ footer{border-top:1px solid var(--line);margin-top:84px;background:var(--surface
 .arx-hgroup button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .panel-color{flex-wrap:wrap;overflow:visible}
 @media (min-width:901px){.arx-stage{position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}}
+
+.arx-check{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+.arx-check input{width:20px;height:20px;accent-color:var(--blue);padding:0}
+.arx-check{flex-direction:row !important}

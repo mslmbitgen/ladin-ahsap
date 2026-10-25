@@ -67,10 +67,14 @@
         <div class="arx-panel">
           <div class="k3d-row"><span class="k3d-lbl">1 · Mobilya</span><div class="seg arx-prod" id="ar-product" role="group" aria-label="Mobilya"></div></div>
           <div class="k3d-row">
-            <span class="k3d-lbl">2 · Ölçü</span>
+            <span class="k3d-lbl">2 · Ölçü ve model</span>
             <div id="row-w"><div class="rng"><label for="ar-w">Genişlik</label><output id="o-w"></output></div><input type="range" id="ar-w"><div class="arx-presets" id="ar-presets"></div></div>
             <div id="row-h" hidden><div class="rng"><label for="ar-h">Yükseklik (tavana kadar)</label><output id="o-h"></output></div><input type="range" id="ar-h"></div>
             <div id="row-size" hidden><div class="seg" role="group" aria-label="Yatak ölçüsü"></div></div>
+            <div id="row-mt" hidden><div class="arx-sub">Mutfak tipi</div><div class="seg two" id="ar-mt" role="group" aria-label="Mutfak tipi"><button type="button" data-mt="duz" aria-pressed="true">Düz</button><button type="button" data-mt="l" aria-pressed="false">L (köşe)</button></div></div>
+            <div id="row-side" hidden><div class="rng"><label for="ar-side">Yan duvar</label><output id="o-side"></output></div><input type="range" id="ar-side" min="1500" max="3600" step="50" value="2000"></div>
+            <label id="row-upper" class="arx-check" hidden><input type="checkbox" id="ar-upper" checked> Üst dolaplar</label>
+            <div id="row-door" hidden><div class="arx-sub">Kapak tipi</div><div class="seg three" id="ar-door" role="group" aria-label="Kapak tipi"><button type="button" data-door="kapakli" aria-pressed="true">Kapaklı</button><button type="button" data-door="surgulu" aria-pressed="false">Sürgülü</button><button type="button" data-door="ayna" aria-pressed="false">Aynalı sürgülü</button></div></div>
           </div>
           <div class="k3d-row">
             <span class="k3d-lbl">3 · Renk ve kulp</span>

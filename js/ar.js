@@ -27,9 +27,11 @@
     mese: ['Meşe', '#C9A06E', 0.55, ['#D2A673', '#A0713F']], beton: ['Beton gri', '#9EA0A1', 0.85]
   };
   var HANDLES = { cubuk: 'Çubuk kulp', dugme: 'Düğme kulp', yok: 'Kulpsuz' };
+  var DOORS = { kapakli: 'Kapaklı', surgulu: 'Sürgülü', ayna: 'Aynalı sürgülü' };
+  var SIDE = [1500, 3600, 50];
 
   // ---------- Durum (paylaşılan linkten okunur) ----------
-  var state = { p: 'gardirop', w: 0, h: 2400, size: '100x200', c: 'beyaz', g: 'ayni', t: 'mermer', k: 'cubuk', dims: true };
+  var state = { p: 'gardirop', w: 0, h: 2400, size: '100x200', c: 'beyaz', g: 'ayni', t: 'mermer', k: 'cubuk', dims: true, mt: 'duz', side: 2000, upper: true, door: 'kapakli' };
   function clamp(v, r) { v = Math.round(+v / r[2]) * r[2]; return isNaN(v) ? null : Math.min(r[1], Math.max(r[0], v)); }
   (function readHash() {
     var parts = decodeURIComponent(location.hash.slice(1)).split('?'), q = {};
@@ -43,16 +45,23 @@
     if (BODIES[q.g]) state.g = q.g;
     if (TOPS[q.t]) state.t = q.t;
     if (HANDLES[q.k]) state.k = q.k;
+    if (q.m === 'l') state.mt = 'l';
+    if (q.y) state.side = clamp(q.y, SIDE) || 2000;
+    if (q.u === '0') state.upper = false;
+    if (DOORS[q.d]) state.door = q.d;
   })();
 
   function cm(mm) { return (Math.round(mm / 10 * 10) / 10).toString().replace('.', ',') + ' cm'; }
   function dims() {
     var pr = PRODUCTS[state.p];
     if (state.p === 'karyola') { var s = state.size.split('x'); return { W: s[0] * 10 + 60, H: 1000, D: s[1] * 10 + 60 }; }
-    return { W: state.w, H: pr.hr ? state.h : pr.h, D: pr.d };
+    if (state.p === 'mutfak' && state.mt === 'l') return { W: state.w, H: pr.h, D: state.side, side: true };
+    return { W: state.w, H: pr.hr ? state.h : pr.h, D: state.p === 'gardirop' && state.door !== 'kapakli' ? 650 : pr.d };
   }
   function shareURL() {
     var q = state.p === 'karyola' ? 's=' + state.size : 'w=' + state.w + (PRODUCTS[state.p].hr ? '&h=' + state.h : '');
+    if (state.p === 'mutfak') q += '&m=' + state.mt + (state.mt === 'l' ? '&y=' + state.side : '') + (state.upper ? '' : '&u=0');
+    if (state.p === 'gardirop') q += '&d=' + state.door;
     q += '&c=' + state.c + '&g=' + state.g + '&k=' + state.k + (PRODUCTS[state.p].top ? '&t=' + state.t : '');
     return location.href.split('#')[0] + '#' + state.p + '?' + q;
   }
@@ -62,13 +71,15 @@
   function isPreset() {
     var pr = PRODUCTS[state.p];
     if (state.p === 'karyola') return true;
+    if (state.p === 'mutfak' && (state.mt !== 'duz' || !state.upper)) return false;
+    if (state.p === 'gardirop' && state.door !== 'kapakli') return false;
     return pr.presets.indexOf(state.w) >= 0 && (!pr.hr || state.h === 2400);
   }
   function loadModel() {
     var src;
     if (isPreset()) { src = 'modeller/' + state.p + '-' + (state.p === 'karyola' ? state.size : state.w) + '.glb'; usingBlob = false; }
     else {
-      var glb = window.LadinModel.build(state.p, { w: state.w, h: state.h });
+      var glb = window.LadinModel.build(state.p, { w: state.w, h: state.h, door: state.door, mt: state.mt, side: state.side, upper: state.upper });
       if (blobURL) URL.revokeObjectURL(blobURL);
       blobURL = src = URL.createObjectURL(new Blob([glb], { type: 'model/gltf-binary' }));
       usingBlob = true;
@@ -141,7 +152,7 @@
     mv.updateHotspot({ name: 'hotspot-d', position: f(c.x + s.x / 2 + 0.04, c.y + s.y / 2, c.z) });
     $('dim-w').textContent = '↔ ' + cm(d.W);
     $('dim-h').textContent = '↕ ' + cm(d.H);
-    $('dim-d').textContent = 'derinlik ' + cm(d.D);
+    $('dim-d').textContent = (d.side ? 'yan duvar ' : 'derinlik ') + cm(d.D);
     mv.cameraTarget = 'auto ' + (s.y * 0.5).toFixed(2) + 'm auto';
   }
 
@@ -158,6 +169,11 @@
       return '<button type="button" data-p="' + k + '" aria-pressed="' + (k === state.p) + '">' + PRODUCTS[k].name + '</button>';
     }).join('');
     $('row-w').hidden = !pr.w; $('row-h').hidden = !pr.hr; $('row-size').hidden = !pr.sizes; $('row-top').hidden = !pr.top;
+    $('row-mt').hidden = $('row-upper').hidden = state.p !== 'mutfak';
+    $('row-side').hidden = !(state.p === 'mutfak' && state.mt === 'l');
+    $('row-door').hidden = state.p !== 'gardirop';
+    $('ar-side').value = state.side; $('ar-upper').checked = state.upper;
+    press($('ar-mt'), 'data-mt', state.mt); press($('ar-door'), 'data-door', state.door);
     if (pr.w) {
       var r = $('ar-w'); r.min = pr.w[0]; r.max = pr.w[1]; r.step = pr.w[2]; r.value = state.w;
       $('ar-presets').innerHTML = 'Standart: ' + pr.presets.map(function (v) { return '<button type="button" data-v="' + v + '">' + v / 10 + '</button>'; }).join('') + ' cm';
@@ -173,10 +189,13 @@
     var pr = PRODUCTS[state.p], c = COLORS[state.c], d = dims();
     if (pr.w) $('o-w').textContent = cm(state.w);
     if (pr.hr) $('o-h').textContent = cm(state.h);
+    $('o-side').textContent = cm(state.side);
     $('ar-cname').textContent = c[0] + ' · ' + HANDLES[state.k];
-    var sel = 'Kapak ' + c[0] + ' · Gövde ' + (state.g === 'ayni' ? c[0] : BODIES[state.g]) + ' · ' + HANDLES[state.k] + (pr.top ? ' · Tezgah ' + TOPS[state.t][0] : '');
+    var model = state.p === 'mutfak' ? (state.mt === 'l' ? 'L mutfak' : 'Düz mutfak') + (state.upper ? '' : ', üst dolapsız') + ' · '
+      : state.p === 'gardirop' ? DOORS[state.door] + ' · ' : '';
+    var sel = model + 'Kapak ' + c[0] + ' · Gövde ' + (state.g === 'ayni' ? c[0] : BODIES[state.g]) + ' · ' + HANDLES[state.k] + (pr.top ? ' · Tezgah ' + TOPS[state.t][0] : '');
     $('ar-sum').innerHTML =
-      '<div><span>' + pr.name + ' · G × Y × D</span><b>' + cm(d.W) + ' × ' + cm(d.H) + ' × ' + cm(d.D) + '</b></div>' +
+      '<div><span>' + pr.name + (d.side ? ' · G × Y × yan' : ' · G × Y × D') + '</span><b>' + cm(d.W) + ' × ' + cm(d.H) + ' × ' + cm(d.D) + '</b></div>' +
       '<div><span>Seçim</span><b>' + sel + '</b></div>';
     var url = shareURL();
     try { history.replaceState(null, '', '#' + url.split('#')[1]); } catch (e) {}
@@ -195,6 +214,9 @@
     renderControls(); loadModel(); update();
   });
   onClick('ar-presets', function (b) { state.w = +b.dataset.v; $('ar-w').value = state.w; if (PRODUCTS[state.p].hr) { state.h = 2400; $('ar-h').value = 2400; } loadModel(); update(); });
+  onClick('ar-mt', function (b) { state.mt = b.dataset.mt; renderControls(); loadModel(); update(); });
+  onClick('ar-door', function (b) { state.door = b.dataset.door; press($('ar-door'), 'data-door', state.door); loadModel(); update(); });
+  $('ar-upper').addEventListener('change', function () { state.upper = this.checked; loadModel(); update(); });
   onClick('row-size', function (b) { state.size = b.dataset.s; press($('row-size'), 'data-s', state.size); loadModel(); update(); });
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.arx-colors button, .arx-hgroup button');
@@ -208,7 +230,7 @@
   $('ar-dims').addEventListener('click', function () {
     state.dims = !state.dims; mv.classList.toggle('no-dims', !state.dims); this.setAttribute('aria-pressed', state.dims);
   });
-  [['ar-w', 'w'], ['ar-h', 'h']].forEach(function (x) {
+  [['ar-w', 'w'], ['ar-h', 'h'], ['ar-side', 'side']].forEach(function (x) {
     var el = $(x[0]);
     el.addEventListener('input', function () { state[x[1]] = +el.value; update(); rebuildSoon(); });
   });
@@ -220,6 +242,16 @@
   });
 
   var wasInAR = false;
+  var XR = false;
+  if (navigator.xr && navigator.xr.isSessionSupported) navigator.xr.isSessionSupported('immersive-ar').then(function (v) { XR = v; }, function () {});
+  var UA = navigator.userAgent, ANDROID = /Android/i.test(UA), IOS = /iPhone|iPad|iPod/i.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function sceneViewerURL() {
+    var pr = PRODUCTS[state.p], v = state.p === 'karyola' ? state.size
+      : pr.presets.reduce(function (a, b) { return Math.abs(b - state.w) < Math.abs(a - state.w) ? b : a; });
+    var file = new URL('modeller/' + state.p + '-' + v + '.glb', location.href).href;
+    return 'intent://arvr.google.com/scene-viewer/1.0?file=' + encodeURIComponent(file) + '&mode=ar_preferred&resizable=false&title=' + encodeURIComponent('Ladin Ahşap · ' + pr.name) +
+      '#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=' + encodeURIComponent(location.href) + ';end;';
+  }
   function afterAR() {
     $('ar-after').classList.add('lit');
     $('ar-wa').textContent = 'Beğendiniz mi? Bu tasarımla ölçü isteyin';
@@ -227,7 +259,17 @@
   // Odamda Göster: telefonda kamerayı açar; bilgisayarda QR kodla telefona geçirir
   $('ar-go').addEventListener('click', function () {
     $('ar-fail').hidden = true;
+    // Android: sayfa içi kamera (WebXR) yoksa model-viewer Google görüntüleyicisine geçer; o da tarayıcıda üretilen modeli açamaz.
+    // Bu durumda doğrudan en yakın hazır dosyayla açıyoruz.
+    if (ANDROID && !XR) {
+      wasInAR = true;
+      $('ar-fail').textContent = 'Bu tarayıcı kamerayı sayfa içinde açamadığı için Google görüntüleyicisi açıldı; mobilya en yakın standart modelde ve beyaz görünür. Seçtiğiniz ölçü, renk ve modelle görmek için sayfayı Chrome ile açın.';
+      $('ar-fail').hidden = false;
+      location.href = sceneViewerURL();
+      return;
+    }
     if (mv.canActivateAR) { wasInAR = true; mv.activateAR(); return; }
+    if (IOS) { $('ar-fail').textContent = 'Kamera için sayfayı Safari ile açın.'; $('ar-fail').hidden = false; return; }
     showMode(); $('ar-desk').hidden = false;
     $('ar-desk').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
@@ -262,5 +304,5 @@
   renderControls();
   loadModel();
   update();
-  setTimeout(function () { if (!mv.canActivateAR) $('ar-go').lastChild.textContent = 'Odamda Göster (telefonda)'; }, 1500);
+  setTimeout(function () { if (!mv.canActivateAR && !ANDROID && !IOS) $('ar-go').lastChild.textContent = 'Odamda Göster (telefonda)'; }, 1500);
 })();

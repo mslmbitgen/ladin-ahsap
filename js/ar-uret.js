@@ -95,13 +95,29 @@
   }
 
   // ---------- Ürünler ----------
-  function gardirop(W, H) {
+  function gardirop(W, H, type) {
     var m = new Model(); common(m);
-    var D = 0.6, P = 0.08, TOP = H >= 2.2 ? 0.45 : 0, T = 0.018, split = H - TOP;
+    var P = 0.08, T = 0.018;
+    if (type === 'surgulu' || type === 'ayna') {
+      fixed(m); m.mat('ayna', '#C9D6DD', 0.08, 0.25);
+      var Ds = 0.65, n = W <= 1.9 ? 2 : 3, pw = W / n + 0.04, ph = H - P - 0.06;
+      m.box('baza', W - 0.02, P, Ds - 0.06, 0, P / 2, (Ds - 0.06) / 2);
+      m.box('govde', W, H - P, Ds - 0.1, 0, (H + P) / 2, (Ds - 0.1) / 2);
+      m.box('celik', W, 0.04, 0.1, 0, H - 0.02, Ds - 0.05); // üst ray
+      for (var s2 = 0; s2 < n; s2++) {
+        var xs = -W / 2 + pw / 2 + s2 * (W - pw) / (n - 1), zs = Ds - (s2 % 2 ? 0.045 : 0.012);
+        var mirror = type === 'ayna' && s2 === n - 2 + (n === 2 ? 1 : 0);
+        m.box(mirror ? 'ayna' : 'kapak', pw - 0.03, ph, 0.02, xs, P + ph / 2 + 0.01, zs - 0.01);
+        m.box('celik', 0.02, ph, 0.03, xs - pw / 2 + 0.01, P + ph / 2 + 0.01, zs - 0.01); // kulp profilleri
+        m.box('celik', 0.02, ph, 0.03, xs + pw / 2 - 0.01, P + ph / 2 + 0.01, zs - 0.01);
+      }
+      return m;
+    }
+    var D = 0.6, TOP = H >= 2.2 ? 0.45 : 0, split = H - TOP;
     m.box('baza', W - 0.02, P, D - 0.06, 0, P / 2, (D - 0.06) / 2);
     m.box('govde', W, H - P, D - T, 0, (H + P) / 2, (D - T) / 2);
-    var n = Math.max(2, Math.round(W / 0.45)), dw = W / n;
-    for (var i = 0; i < n; i++) {
+    var nd = Math.max(2, Math.round(W / 0.45)), dw = W / nd;
+    for (var i = 0; i < nd; i++) {
       var x = -W / 2 + dw * (i + 0.5), side = i % 2 === 0 ? 'r' : 'l';
       door(m, dw, split - P, x, (P + split) / 2, D, side, Math.min(1.05, (P + split) / 2));
       if (TOP) door(m, dw, TOP, x, (split + H) / 2, D, side, split + 0.09);
@@ -126,30 +142,49 @@
     m.box('kapak', pw, 0.025, 0.28, px, y1 - 0.0125, 0.14);
     return m;
   }
-  function mutfak(W) {
-    var m = new Model(); common(m); fixed(m);
-    m.mat('tezgah', '#E9E6E0', 0.3, 0);
+  // Yerel dizi koordinatı (x: 0..uzunluk, z: duvardan öne) → dünya; swap: dizi Z ekseni boyunca
+  function proxy(m, map, swapAxes) {
+    return { box: function (mat, w, h, d, x, y, z) { var p = map(x, z); if (swapAxes) m.box(mat, d, h, w, p[0], y, p[1]); else m.box(mat, w, h, d, p[0], y, p[1]); } };
+  }
+  function kitchenRun(r, len, o) {
     var D = 0.6, P = 0.1, BT = 0.86, CT = 0.04, UY = 1.45, UH = 0.72, UD = 0.35;
-    var n = Math.max(3, Math.round(W / 0.6)), w = W / n, sink = Math.floor(n * 0.3), oven = Math.min(n - 1, Math.max(sink + 1, Math.floor(n * 0.65)));
-    m.box('baza', W, P, D - 0.06, 0, P / 2, (D - 0.06) / 2);
-    m.box('govde', W, BT - P, D - 0.02, 0, (BT + P) / 2, (D - 0.02) / 2);
-    m.box('tezgah', W + 0.02, CT, D + 0.02, 0, BT + CT / 2, (D + 0.02) / 2);
+    var n = Math.max(o.oven ? 3 : 1, Math.round(len / 0.6)), w = len / n, first = o.cornerStart ? 1 : 0;
+    var sink = o.sink ? Math.min(n - 1, Math.max(first, Math.floor(n * 0.3))) : -1;
+    var oven = o.oven ? Math.min(n - 1, Math.max(sink + 1, Math.floor(n * 0.65))) : -1;
+    var drawer = -1;
+    for (var q = first; q < n; q++) if (q !== sink && q !== oven) { drawer = q; break; }
+    r.box('baza', len, P, D - 0.06, len / 2, P / 2, (D - 0.06) / 2);
+    r.box('govde', len, BT - P, D - 0.02, len / 2, (BT + P) / 2, (D - 0.02) / 2);
+    r.box('tezgah', len + 0.02, CT, D + 0.02, len / 2, BT + CT / 2, (D + 0.02) / 2);
     for (var k = 0; k < n; k++) {
-      var x = -W / 2 + w * (k + 0.5), h = BT - P;
+      var x = w * (k + 0.5), h = BT - P;
       if (k === oven) {
-        door(m, w, 0.16, x, P + 0.08, D, 'hc');
-        m.box('cam', w - 0.02, h - 0.18, 0.02, x, P + 0.16 + (h - 0.16) / 2, D - 0.008);
-        m.box('celik', w * 0.7, 0.014, 0.02, x, BT - 0.06, D + 0.012);
-        m.box('cam', Math.min(0.58, w - 0.02), 0.008, 0.5, x, BT + CT + 0.004, 0.3);
-        m.box('celik', Math.min(0.9, w * 0.95), 0.07, 0.48, x, UY + 0.05, 0.24);
-        m.box('celik', 0.28, 2.17 - UY - 0.085, 0.25, x, (UY + 0.085 + 2.17) / 2, 0.125);
+        door(r, w, 0.16, x, P + 0.08, D, 'hc');
+        r.box('cam', w - 0.02, h - 0.18, 0.02, x, P + 0.16 + (h - 0.16) / 2, D - 0.008);
+        r.box('celik', w * 0.7, 0.014, 0.02, x, BT - 0.06, D + 0.012);
+        r.box('cam', Math.min(0.58, w - 0.02), 0.008, 0.5, x, BT + CT + 0.004, 0.3);
+        r.box('celik', Math.min(0.9, w * 0.95), 0.07, 0.48, x, UY + 0.05, 0.24);
+        r.box('celik', 0.28, 2.17 - UY - 0.085, 0.25, x, (UY + 0.085 + 2.17) / 2, 0.125);
         continue;
       }
-      if (k === 0) { for (var d = 0; d < 3; d++) door(m, w, h / 3, x, P + h / 6 + d * h / 3, D, 'hc'); }
-      else door(m, w, h, x, P + h / 2, D, k % 2 ? 'l' : 'r', BT - 0.12);
-      if (k === sink) { m.box('celik', Math.min(0.5, w - 0.06), 0.006, 0.4, x, BT + CT + 0.003, 0.3); m.box('celik', 0.02, 0.28, 0.02, x, BT + CT + 0.14, 0.07); m.box('celik', 0.02, 0.02, 0.18, x, BT + CT + 0.27, 0.15); }
-      m.box('govde', w, UH, UD - 0.02, x, UY + UH / 2, (UD - 0.02) / 2);
-      door(m, w, UH, x, UY + UH / 2, UD, k % 2 ? 'l' : 'r', UY + 0.1);
+      if (k === drawer) { for (var d = 0; d < 3; d++) door(r, w, h / 3, x, P + h / 6 + d * h / 3, D, 'hc'); }
+      else door(r, w, h, x, P + h / 2, D, k % 2 ? 'l' : 'r', BT - 0.12);
+      if (k === sink) { r.box('celik', Math.min(0.5, w - 0.06), 0.006, 0.4, x, BT + CT + 0.003, 0.3); r.box('celik', 0.02, 0.28, 0.02, x, BT + CT + 0.14, 0.07); r.box('celik', 0.02, 0.02, 0.18, x, BT + CT + 0.27, 0.15); }
+      if (o.upper) {
+        r.box('govde', w, UH, UD - 0.02, x, UY + UH / 2, (UD - 0.02) / 2);
+        door(r, w, UH, x, UY + UH / 2, UD, k % 2 ? 'l' : 'r', UY + 0.1);
+      }
+    }
+  }
+  // o: { l: L tipi mi, side: yan duvar (m), upper: üst dolap }
+  function mutfak(W, o) {
+    var m = new Model(); common(m); fixed(m);
+    m.mat('tezgah', '#E9E6E0', 0.3, 0);
+    var D = 0.6, upper = o.upper !== false;
+    kitchenRun(proxy(m, function (x, z) { return [-W / 2 + x, z]; }, false), W, { sink: true, oven: true, cornerStart: o.l, upper: upper });
+    if (o.l) {
+      var Ls = Math.max(0.6, o.side - D);
+      kitchenRun(proxy(m, function (x, z) { return [-W / 2 + z, D + Ls - x]; }, true), Ls, { upper: upper });
     }
     return m;
   }
@@ -211,12 +246,12 @@
     return m;
   }
 
-  // o: { w: mm, h: mm (gardırop), size: '100x200' (karyola) }
+  // o: { w: mm, h: mm (gardırop), door: kapakli|surgulu|ayna, size: '100x200' (karyola), mt: duz|l, side: mm, upper: bool (mutfak) }
   function build(p, o) {
     var W = (o.w || 0) / 1000, mdl;
-    if (p === 'gardirop') mdl = gardirop(W, (o.h || 2400) / 1000);
+    if (p === 'gardirop') mdl = gardirop(W, (o.h || 2400) / 1000, o.door);
     else if (p === 'vestiyer') mdl = vestiyer(W);
-    else if (p === 'mutfak') mdl = mutfak(W);
+    else if (p === 'mutfak') mdl = mutfak(W, { l: o.mt === 'l', side: (o.side || 2000) / 1000, upper: o.upper });
     else if (p === 'karyola') { var s = String(o.size || '100x200').split('x'); mdl = karyola(s[0] / 100, s[1] / 100); }
     else if (p === 'masa') mdl = masa(W);
     else if (p === 'tv') mdl = tv(W);
