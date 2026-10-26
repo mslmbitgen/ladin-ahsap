@@ -609,3 +609,5 @@ html[lang="ar"] .stock-b{right:auto;left:10px}
 .pay-more a{color:var(--blue);font-weight:600}
 @media (max-width:980px){.pay{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.pay{grid-template-columns:1fr}}
+.arx-photo{flex-direction:row !important}
+html[lang="ar"] .bp li{font-family:"Cairo",sans-serif;font-size:13px}
