@@ -520,3 +520,92 @@ footer{border-top:1px solid var(--line);margin-top:84px;background:var(--surface
 .arx-check{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .arx-check input{width:20px;height:20px;accent-color:var(--blue);padding:0}
 .arx-check{flex-direction:row !important}
+
+/* ---------- Arapça (sağdan sola) ---------- */
+html[lang="ar"] body{font-family:"Cairo","Segoe UI",Tahoma,sans-serif}
+html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,html[lang="ar"] .hero-card h2{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;letter-spacing:0;line-height:1.25}
+html[lang="ar"] .eyebrow,html[lang="ar"] .k3d-lbl,html[lang="ar"] .foot h4,html[lang="ar"] .k-sum span,html[lang="ar"] .step .n,html[lang="ar"] .step .t{font-family:"Cairo",sans-serif;letter-spacing:0;text-transform:none;font-size:13px;font-weight:700}
+html[lang="ar"] .logo{font-family:var(--display)}
+html[lang="ar"] .hero-photo::before{background:linear-gradient(270deg,rgba(11,15,30,.9) 0%,rgba(11,15,30,.7) 42%,rgba(11,15,30,.2) 100%)}
+html[lang="ar"] .step{border-left:0;border-right:1px solid var(--line)}
+html[lang="ar"] .step:first-child{border-right:0;padding-right:0;padding-left:24px}
+html[lang="ar"] .stock-b{right:auto;left:10px}
+.lang-link{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;font-weight:700 !important}
+
+/* ---------- Odanızda Gör: bütçe, fotoğraf, ölçüm, randevu ---------- */
+.arx-price{background:color-mix(in srgb,var(--green) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--green) 40%,transparent);border-radius:10px;padding:10px 12px;margin-top:2px}
+.arx-price b{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.arx-price small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.arx-price em{font-style:normal;font-weight:700;color:#B4581E}
+.arx-ms{display:inline-flex;align-items:center;gap:8px;margin-top:8px;border:1px dashed var(--blue);background:var(--blue-soft);color:var(--blue);border-radius:999px;padding:8px 14px;font:600 13px var(--body);cursor:pointer}
+.arx-ms svg{width:18px;height:18px}
+.arx-photo{width:100%;cursor:pointer;gap:8px}
+.arx-photo svg{width:20px;height:20px}
+.arx-stage.on-photo{background-size:cover;background-position:center}
+#arv.on-photo{background:transparent}
+.ph-tools{position:absolute;left:10px;right:10px;bottom:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}
+.ph-tools div{display:flex;gap:8px}
+.ph-tools .btn{flex:1;padding:10px 12px;font-size:14px}
+.arx-ap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.arx-ap label{font-size:13px}
+.arx-ap input,.arx-ap select{border:1px solid var(--line);background:var(--paper);padding:10px 12px;font-size:15px}
+.ms{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:transparent}
+.ms-cross{width:46px;height:46px;position:relative;opacity:.55}
+.ms-cross::before,.ms-cross::after{content:"";position:absolute;background:#FFFFFF;box-shadow:0 0 0 1.5px rgba(0,0,0,.45)}
+.ms-cross::before{left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%)}
+.ms-cross::after{top:50%;left:0;right:0;height:3px;transform:translateY(-50%)}
+.ms.hit .ms-cross{opacity:1}
+.ms.hit .ms-cross::before,.ms.hit .ms-cross::after{background:#7CE05A}
+.ms-bar{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:rgba(15,20,36,.88);color:#FFFFFF;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ms-bar p{font-size:15px;line-height:1.4}
+.ms-acts{display:flex;gap:8px}
+.ms-acts button{flex:1;border:0;border-radius:999px;padding:12px 8px;font:700 15px var(--body);background:rgba(255,255,255,.16);color:#FFFFFF;cursor:pointer}
+.ms-acts #ms-use{background:#5BAA37;color:#0E1A08}
+.ms-acts button:disabled{opacity:.4}
+
+/* ---------- "Aynısını odamda gör" ---------- */
+.proj .tag .sub{display:block}
+.proj .tag .same{display:inline-block;margin-top:6px;font:600 12px var(--body);color:#9FE07F;text-decoration:none}
+.proj .tag .same:hover{text-decoration:underline}
+.lb-same{display:inline-block;margin-top:6px;color:#9FE07F;font-weight:600;text-decoration:none}
+
+/* ---------- Sipariş takip ---------- */
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.st-grid>*{min-width:0}
+.st-lead{color:var(--muted);max-width:32em}
+.st-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.st-form label{font-size:13px}
+.st-form input{border:1px solid var(--line);background:var(--paper);font:500 16px var(--mono);letter-spacing:.04em}
+.st-form .btn,.st-form .err{grid-column:1/-1}
+.st-form .err{color:#B42318}
+.st-demo{margin-top:12px;font-size:13px;color:var(--muted)}
+.st-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.st-top{display:flex;flex-direction:column;gap:4px}
+.st-kod{font:500 12px var(--mono);color:var(--green);letter-spacing:.08em}
+.st-top b{font-size:20px}
+.st-steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:st}
+.st-steps li{position:relative;padding:10px 0 10px 38px;color:var(--muted);counter-increment:st}
+.st-steps li::before{content:counter(st);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 12px var(--mono);background:var(--paper);border:1.5px solid var(--line);color:var(--muted)}
+.st-steps li:not(:last-child)::after{content:"";position:absolute;left:12.5px;top:36px;bottom:-8px;width:1.5px;background:var(--line)}
+.st-steps li.done{color:var(--ink)}
+.st-steps li.done::before{content:"✓";background:var(--green);border-color:var(--green);color:#0E1A08}
+.st-steps li.now{color:var(--ink);font-weight:700}
+.st-steps li.now::before{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+.st-steps li em{font-style:normal;font:600 11px var(--mono);color:var(--blue);background:var(--blue-soft);padding:2px 6px;border-radius:4px;margin-left:6px}
+.st-eta b{font-weight:700}
+.st-note{background:var(--paper);border-radius:10px;padding:10px 12px;font-size:14px}
+.st-upd{font-size:12px;color:var(--muted)}
+.st-empty{background:var(--surface);border:1px dashed var(--line);border-radius:18px;padding:22px;opacity:.6}
+@media (max-width:860px){.st-grid{grid-template-columns:1fr;gap:28px}.st-form{grid-template-columns:1fr}}
+
+/* ---------- Ödeme ve garanti ---------- */
+.pay{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pay-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.pay-ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);font:700 18px var(--body);margin-bottom:6px}
+.pay-item h3{font-size:18px}
+.pay-item p{color:var(--muted);font-size:15px}
+.pay-item b{color:var(--ink)}
+.pay-more{margin-top:18px;color:var(--muted);font-size:15px}
+.pay-more a{color:var(--blue);font-weight:600}
+@media (max-width:980px){.pay{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.pay{grid-template-columns:1fr}}

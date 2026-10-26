@@ -60,8 +60,12 @@ if (planBox) {
 // Fotoğraf önizleme ve teklif formu (ana sayfa)
 var form = $('#teklif');
 if (form) {
+  var AR_PAGE = document.documentElement.lang === 'ar';
   var foto = $('#f-foto'), thumbs = $('#thumbs');
-  foto.addEventListener('change', function () {
+  // Keşif tarihi: en erken yarın
+  var tarih = $('#f-tarih');
+  if (tarih) { var yarin = new Date(); yarin.setDate(yarin.getDate() + 1); tarih.min = yarin.toISOString().slice(0, 10); }
+  if (foto) foto.addEventListener('change', function () {
     thumbs.innerHTML = '';
     Array.prototype.slice.call(foto.files, 0, 6).forEach(function (f) {
       var img = document.createElement('img');
@@ -80,23 +84,31 @@ if (form) {
     var v = function (id) { return $('#' + id).value.trim(); };
     var err = $('#err'), out = $('#sonuc');
     if (!v('f-ad') || v('f-tel').replace(/\D/g, '').length < 10) {
-      err.textContent = 'Adınızı ve 10 haneli telefon numaranızı yazın.';
+      err.textContent = AR_PAGE ? 'اكتب اسمك ورقم هاتفك المكوّن من 10 أرقام.' : 'Adınızı ve 10 haneli telefon numaranızı yazın.';
       err.hidden = false; out.hidden = true; return;
     }
     err.hidden = true;
-    var msg = 'Merhaba, ' + v('f-hizmet').toLowerCase() + ' için teklif almak istiyorum.\n' +
+    // Mesaj ustaya her zaman Türkçe gider; seçim kutularının değerleri Türkçedir
+    var zaman = '';
+    if (tarih && tarih.value) {
+      zaman = new Date(tarih.value + 'T12:00:00').toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' }) +
+        ($('#f-saat') ? ', ' + $('#f-saat').value : '');
+    }
+    var msg = (AR_PAGE ? '[Arapça sayfadan] ' : '') + 'Merhaba, ' + v('f-hizmet').toLowerCase() + ' için teklif almak istiyorum.\n' +
               'Ad: ' + v('f-ad') + '\nTelefon: ' + v('f-tel') + '\nYer: ' + v('f-yer') +
+              (zaman ? '\nKeşif için uygun zamanım: ' + zaman : '') +
               (v('f-not') ? '\nNot: ' + v('f-not') : '');
     out.innerHTML = '';
     var p = document.createElement('p');
     p.style.marginBottom = '10px';
-    p.textContent = foto.files.length
-      ? 'Mesajınız hazır. WhatsApp açılınca seçtiğiniz fotoğrafları sohbete ekleyip gönderin.'
-      : 'Mesajınız hazır. Göndermek için WhatsApp\'ı açın.';
+    p.textContent = AR_PAGE ? 'رسالتك جاهزة. افتح واتساب لإرسالها.'
+      : foto && foto.files.length
+        ? 'Mesajınız hazır. WhatsApp açılınca seçtiğiniz fotoğrafları sohbete ekleyip gönderin.'
+        : 'Mesajınız hazır. Göndermek için WhatsApp\'ı açın.';
     var a = document.createElement('a');
     a.href = 'https://wa.me/905422683828?text=' + encodeURIComponent(msg);
     a.target = '_blank'; a.rel = 'noopener'; a.className = 'btn btn-blue';
-    a.textContent = 'WhatsApp\'ta aç ve gönder';
+    a.textContent = AR_PAGE ? 'افتح واتساب وأرسل' : 'WhatsApp\'ta aç ve gönder';
     out.append(p, a);
     out.hidden = false;
   });
@@ -109,7 +121,7 @@ if (tiles.length && window.HTMLDialogElement) {
   lb.className = 'lb';
   lb.setAttribute('aria-label', 'Proje görseli');
   lb.innerHTML = '<button class="lb-close" aria-label="Kapat">×</button><div class="lb-view"></div>' +
-    '<div class="lb-cap"><div><b></b><span></span></div><div class="lb-nav"><button data-d="-1" aria-label="Önceki">←</button><button data-d="1" aria-label="Sonraki">→</button></div></div>';
+    '<div class="lb-cap"><div><b></b><span></span> <a class="lb-same" target="_self"></a></div><div class="lb-nav"><button data-d="-1" aria-label="Önceki">←</button><button data-d="1" aria-label="Sonraki">→</button></div></div>';
   document.body.appendChild(lb);
   var view = $('.lb-view', lb), current = 0;
 
@@ -121,7 +133,10 @@ if (tiles.length && window.HTMLDialogElement) {
     view.className = 'lb-view ' + Array.prototype.filter.call(t.classList, function (c) { return c.indexOf('t-') === 0; }).join(' ');
     view.innerHTML = img ? '<img src="' + img.getAttribute('src') + '" alt="' + (img.alt || '') + '">' : '';
     $('.lb-cap b', lb).textContent = $('.tag b', t).textContent;
-    $('.lb-cap span', lb).textContent = $('.tag', t).lastChild.textContent + '  ·  ' + (current + 1) + ' / ' + list.length;
+    var sub = $('.tag .sub', t), same = $('.tag .same', t), link = $('.lb-same', lb);
+    $('.lb-cap span', lb).textContent = (sub ? sub.textContent : $('.tag', t).lastChild.textContent) + '  ·  ' + (current + 1) + ' / ' + list.length;
+    link.hidden = !same;
+    if (same) { link.href = same.getAttribute('href'); link.textContent = same.textContent; }
     if (!lb.open) lb.showModal();
   };
   var step = function (d) { var list = visible(); show(list[(current + d + list.length) % list.length]); };
@@ -129,7 +144,7 @@ if (tiles.length && window.HTMLDialogElement) {
   tiles.forEach(function (t) {
     t.tabIndex = 0;
     t.setAttribute('role', 'button');
-    t.addEventListener('click', function () { show(t); });
+    t.addEventListener('click', function (e) { if (!e.target.closest('a')) show(t); });
     t.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(t); } });
   });
   $('.lb-close', lb).addEventListener('click', function () { lb.close(); });

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sipariş Takip · Ladin Ahşap</title>
+<meta name="description" content="Ladin Ahşap siparişinizin hangi aşamada olduğunu sipariş kodunuzla görün.">
+<meta property="og:title" content="Sipariş Takip · Ladin Ahşap">
+<meta property="og:description" content="Ladin Ahşap siparişinizin hangi aşamada olduğunu sipariş kodunuzla görün.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="css/site.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="index.html" aria-label="Ladin Ahşap ana sayfa">
+      <span>L</span>
+      <svg viewBox="0 0 26 26" aria-hidden="true"><polyline points="3,18 13,4 23,18" fill="none" stroke="var(--green)" stroke-width="5"/><rect x="2" y="21" width="22" height="4" fill="var(--blue)"/></svg>
+      <span>DIN</span><span class="w2">AHŞAP</span>
+    </a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Menüyü aç"><span></span></button>
+    <nav id="nav" aria-label="Ana menü">
+      <a href="index.html#hizmetler">Hizmetler</a>
+      <a href="projeler.html">Projeler</a>
+      <a href="evinizde-gorun.html">Odanızda Gör</a>
+      <a href="index.html#atolye">Atölyemiz</a>
+      <a href="index.html#sss">Sorular</a>
+      <a href="index.html#iletisim">İletişim</a>
+      <a href="index-ar.html" lang="ar" class="lang-link">العربية</a>
+    </nav>
+    <a class="phone" href="tel:+905422683828">0542 268 38 28</a>
+    <a class="btn btn-blue" href="index.html#iletisim">Teklif Al</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap"><nav class="crumbs" aria-label="Konum"><a href="index.html">Ana sayfa</a><span>/</span><span>Sipariş Takip</span></nav></div>
+  <section class="block" style="padding-top:28px">
+    <div class="wrap st-grid">
+      <div>
+        <div class="eyebrow">Sipariş takip</div>
+        <h1 style="font-size:clamp(34px,4.6vw,54px);margin:12px 0 14px">Siparişim nerede?</h1>
+        <p class="st-lead">Keşifte size verilen sipariş kodunu ve telefon numaranızın son 4 hanesini yazın; mobilyanızın hangi aşamada olduğunu görün.</p>
+        <form id="st-form" class="st-form" novalidate>
+          <label for="st-kod">Sipariş kodu<input id="st-kod" placeholder="LA-2481" autocomplete="off" autocapitalize="characters"></label>
+          <label for="st-tel">Telefonun son 4 hanesi<input id="st-tel" inputmode="numeric" maxlength="4" placeholder="3828"></label>
+          <button class="btn btn-blue" type="submit">Sorgula</button>
+          <p class="err" id="st-err" hidden></p>
+        </form>
+        <p class="st-demo">Denemek için: <b>LA-2481</b> / <b>3828</b> <span class="draft">örnek kayıt</span></p>
+      </div>
+      <div class="st-result" id="st-result" aria-live="polite">
+        <div class="st-empty">
+          <ol class="st-steps st-steps-preview">
+            <li>Keşif yapıldı</li><li>Çizim onaylandı</li><li>Atölyede üretimde</li><li>Montaja hazır</li><li>Teslim edildi</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="logo" aria-label="Ladin Ahşap">
+        <span>L</span>
+      <svg viewBox="0 0 26 26" aria-hidden="true"><polyline points="3,18 13,4 23,18" fill="none" stroke="var(--green)" stroke-width="5"/><rect x="2" y="21" width="22" height="4" fill="var(--blue)"/></svg>
+      <span>DIN</span><span class="w2">AHŞAP</span>
+      </span>
+      <p>Suruç'ta ölçüye özel mutfak, yüklük, vestiyer, genç ve çocuk odası üretimi.</p>
+    </div>
+    <div><h4>Hizmetler</h4><ul><li><a href="mutfak-dolabi.html">Mutfak Dolabı</a></li><li><a href="yukluk-gardirop.html">Yüklük & Gardırop</a></li><li><a href="vestiyer.html">Vestiyer</a></li><li><a href="genc-cocuk-odasi.html">Genç & Çocuk Odası</a></li></ul></div>
+    <div><h4>Kurumsal</h4><ul><li><a href="index.html#atolye">Atölyemiz</a></li><li><a href="projeler.html">Projeler</a></li><li><a href="evinizde-gorun.html">Odanızda Gör</a></li><li><a href="siparis-takip.html">Sipariş Takip</a></li><li><a href="index-ar.html" lang="ar">العربية</a></li><li><a href="index.html#sss">Sık Sorulanlar</a></li></ul></div>
+    <div><h4>İletişim</h4><ul><li>0542 268 38 28</li><li>Suruç / Şanlıurfa</li><li>Instagram <span class="draft">eklenecek</span></li></ul></div>
+  </div>
+  <div class="wrap legal"><span>© 2026 Ladin Ahşap</span><span>Suruç mutfak dolabı · yüklük · vestiyer · çocuk odası</span></div>
+</footer>
+
+<a class="wa" href="https://wa.me/905422683828?text=Merhaba%2C%20mutfak%20dolab%C4%B1%20i%C3%A7in%20%C3%B6l%C3%A7%C3%BC%20ve%20fiyat%20almak%20istiyorum." target="_blank" rel="noopener" aria-label="WhatsApp ile yazın">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.1.9 2.9 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4Z"/></svg>
+</a>
+<div class="mbar">
+  <a class="btn btn-ghost" href="tel:+905422683828">Ara</a>
+  <a class="btn wa-btn" href="https://wa.me/905422683828?text=Merhaba%2C%20mutfak%20dolab%C4%B1%20i%C3%A7in%20%C3%B6l%C3%A7%C3%BC%20ve%20fiyat%20almak%20istiyorum." target="_blank" rel="noopener">WhatsApp'tan Yaz</a>
+</div>
+
+<script src="js/site.js"></script>
+<script src="js/siparis.js"></script>
+</body>
+</html>
